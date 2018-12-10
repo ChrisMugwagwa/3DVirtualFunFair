@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SuccUp : MonoBehaviour {
+public class LegacySuccUp : MonoBehaviour {
 
     public float succStrength;
     public Transform gunTransform;
     Vector3 towardGunVector;
     Rigidbody rb;
     bool sucking;
-    public bool rightHand;
 
     // Use this for initialization
     void Start () {
@@ -18,24 +17,21 @@ public class SuccUp : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (rightHand) {
-            if (Input.GetKey("f") || Input.GetAxis("Oculus_CrossPlatform_SecondaryIndexTrigger") > 0.55) { //s for now just for testing
-                sucking = true;
-            }
-            else {
-                sucking = false;
-            }
+        if (Input.GetKey("g") || Input.GetAxis("Oculus_CrossPlatform_PrimaryIndexTrigger") > 0.5) { //g for now just for testing
+            sucking = true;
         }
         else {
-            if (Input.GetKey("f") || Input.GetAxis("Oculus_CrossPlatform_PrimaryIndexTrigger") > 0.55) { //s for now just for testing
-                sucking = true;
-            }
-            else {
-                sucking = false;
-            }
+            sucking = false;
         }
-        
     }    
+
+
+    private void OnTriggerEnter(Collider ball) {
+        if (ball.gameObject.tag.Contains("ball") && sucking == true) { //shouldn't hold anything but balls
+            //get the rigidbody of the ball
+            rb = ball.gameObject.GetComponent<Rigidbody>();
+        }
+    }
 
     private void OnTriggerStay(Collider ball) {
         if (ball.gameObject.tag.Contains("ball") && sucking == true) { //shouldn't suck up anything that shouldn't be
